@@ -1,0 +1,36 @@
+<!-- src/main/resources/templates/receipt.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Receipt</title>
+    <style>
+        .receipt { width: 300px; font-family: monospace; }
+        .header { text-align: center; border-bottom: 2px dashed #000; }
+        .item-row { display: flex; justify-content: space-between; }
+        .total-row { font-weight: bold; border-top: 2px dashed #000; }
+    </style>
+</head>
+<body>
+<div class="receipt">
+    <div class="header">
+        <h4>POS SYSTEM</h4>
+        <p th:text="${sale.transactionCode}"></p>
+        <p th:text="${#temporals.format(sale.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
+    </div>
+
+    <div th:each="item : ${sale.items}">
+        <div class="item-row">
+            <span th:text="${item.product.name}"></span>
+            <span th:text="${item.quantity} + ' x ' + ${#numbers.formatDecimal(item.unitPrice, 1, 2)}"></span>
+            <span th:text="${#numbers.formatDecimal(item.subtotal, 1, 2)}"></span>
+        </div>
+    </div>
+
+    <div class="total-row">
+        <span>Total:</span>
+        <span th:text="${#numbers.formatDecimal(sale.totalAmount, 1, 2)}"></span>
+    </div>
+</div>
+</body>
+</html>

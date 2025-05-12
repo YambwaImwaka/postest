@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        .receipt { width: 300px; font-family: Arial, sans-serif; }
+        .header { text-align: center; border-bottom: 2px solid #000; }
+        .item-row { display: flex; justify-content: space-between; }
+        .total { font-weight: bold; border-top: 2px solid #000; }
+    </style>
+</head>
+<body>
+<div class="receipt">
+    <div class="header">
+        <h3>POS SYSTEM</h3>
+        <p th:text="${sale.transactionCode}"></p>
+        <p th:text="${#temporals.format(sale.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
+    </div>
+
+    <div th:each="item : ${sale.items}">
+        <div class="item-row">
+            <span th:text="${item.product.name}"></span>
+            <span th:text="${item.quantity} + ' x ' + ${#numbers.formatDecimal(item.unitPrice, 1, 2)}"></span>
+            <span th:text="${#numbers.formatDecimal(item.subtotal, 1, 2)}"></span>
+        </div>
+    </div>
+
+    <div class="total">
+        <span>Total:</span>
+        <span th:text="${#numbers.formatDecimal(sale.totalAmount, 1, 2)}"></span>
+    </div>
+</div>
+</body>
+</html>
